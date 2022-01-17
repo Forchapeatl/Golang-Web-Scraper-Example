@@ -1,0 +1,19 @@
+package main
+
+import (
+	"fmt"
+	"github.com/anaskhan96/soup"
+)
+func main(){
+fmt.Println("Enter the xkcd comic number :") //collect user input
+var num int //declare an integer called"num" to store the input
+fmt.Scanf("%d", &num) //Collect the user input and assign it to num
+url := fmt.Sprintf("https://xkcd.com/%d", num)//Append num to website url '' 
+resp, _ := soup.Get(url)  //Call the soup fuction to extract url
+doc := soup.HTMLParse(resp) //Parse extracted url to HTML encoding
+title := doc.Find("div", "id", "ctitle").Text()  // parse HTML Text
+fmt.Println("Title of the comic :", title) // print HTML Text
+comicImg := doc.Find("div", "id", "comic").Find("img") //Parse HTML IMAGE
+fmt.Println("Source of the image :", comicImg.Attrs()["src"])
+fmt.Println("Underlying text of the image :", comicImg.Attrs()["title"])
+}
